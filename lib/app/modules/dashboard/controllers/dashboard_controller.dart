@@ -210,7 +210,7 @@ void deleteEvent({required int id}) async {
   }
 
   final List<Widget> pages = [
-    IndexView(),
+    MyApp(),
     YourEventView(),
     ProfileView(),
   ];

@@ -1,129 +1,215 @@
 import 'package:flutter/material.dart';
 
-import 'package:get/get.dart';
-import 'package:getget/app/data/event_response.dart';
-import 'package:getget/app/modules/dashboard/controllers/dashboard_controller.dart';
-import 'package:getget/app/modules/dashboard/views/event_detail_view.dart';
-import 'package:lottie/lottie.dart';
-import 'package:zoom_tap_animation/zoom_tap_animation.dart';
+void main() {
+  runApp(MyApp());
+}
 
-class IndexView extends GetView {
-  const IndexView({super.key});
+class MyApp extends StatelessWidget {
   @override
- Widget build(BuildContext context) {
-    // Menginisialisasi controller untuk Dashboard menggunakan GetX
-    DashboardController controller = Get.put(DashboardController());
-    
-    // Membuat ScrollController untuk mengontrol scroll pada ListView
-    final ScrollController scrollController = ScrollController();
-    
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Metronic Flutter',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: HomePage(),
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Membuat AppBar dengan judul "Event List"
-        title: const Text('Event List'),
-        centerTitle: true, // Menjadikan judul di tengah AppBar
+        title: Text('Metronic Flutter'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              // Handle search action
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.notifications),
+            onPressed: () {
+              // Handle notifications action
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.person),
+            onPressed: () {
+              // Handle user profile action
+            },
+          ),
+        ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0), // Memberi padding di sekitar konten
-        child: FutureBuilder<EventResponse>(
-          // Mengambil data event melalui fungsi getEvent dari controller
-          future: controller.getEvent(),
-          builder: (context, snapshot) {
-            // Jika data sedang dimuat, tampilkan animasi loading
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: Lottie.network(
-                  // Menggunakan animasi Lottie untuk tampilan loading
-                  'https://gist.githubusercontent.com/olipiskandar/4f08ac098c81c32ebc02c55f5b11127b/raw/6e21dc500323da795e8b61b5558748b5c7885157/loading.json',
-                  repeat: true, // Animasi akan berulang terus-menerus
-                  width: MediaQuery.of(context).size.width / 1, // Menyesuaikan lebar animasi
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Text(
+                'Metronic',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
                 ),
-              );
-            }
-            // Jika tidak ada data yang diterima, tampilkan pesan "Tidak ada data"
-            if (snapshot.data!.events!.isEmpty) {
-              return const Center(child: Text("Tidak ada data"));
-            }
-            
-            return ListView.builder(
-              // Menentukan jumlah item berdasarkan panjang data events
-              itemCount: snapshot.data!.events!.length,
-              controller: scrollController, // Menggunakan ScrollController untuk ListView
-              shrinkWrap: true, // Membatasi ukuran ListView agar sesuai dengan konten
-              itemBuilder: (context, index) {
-                return ZoomTapAnimation(
-                  onTap: () {
-                    // Navigasi ke EventDetailView saat item ditekan
-                    Get.to(() => EventDetailView(), id: 1);
-                  },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start, // Menyusun elemen secara horizontal di kiri
-                    children: [
-                      // Menampilkan gambar event
-                      Image.network(
-                        'https://picsum.photos/id/${snapshot.data!.events![index].id}/700/300',
-                        fit: BoxFit.cover, // Menyesuaikan gambar dengan area tampilan
-                        height: 200,
-                        width: 500,
-                        errorBuilder: (context, error, stackTrace) {
-                          // Menangani error jika gambar tidak ditemukan
-                          return const SizedBox(
-                            height: 200,
-                            child: Center(
-                              child: Text('Image not found'),
-                            ),
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 16), // Jarak antara elemen
-                      // Menampilkan judul event
-                      Text(
-                        'title',
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold, // Membuat teks menjadi tebal
-                        ),
-                      ),
-                      const SizedBox(height: 8), // Jarak antara elemen
-                      // Menampilkan deskripsi event
-                      Text(
-                        'description',
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey, // Warna teks abu-abu
-                        ),
-                      ),
-                      const SizedBox(height: 16), // Jarak antara elemen
-                      Row(
-                        children: [
-                          // Ikon lokasi
-                          const Icon(
-                            Icons.location_on,
-                            color: Colors.red, // Warna ikon merah
-                          ),
-                          const SizedBox(width: 8), // Jarak antara ikon dan teks
-                          Expanded(
-                            child: Text(
-                              'location', // Lokasi event
-                              style: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.black, // Warna teks hitam
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.dashboard),
+              title: Text('Dashboards'),
+              onTap: () {
+                // Handle dashboard tap
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.shopping_cart),
+              title: Text('eCommerce'),
+              onTap: () {
+                // Handle eCommerce tap
+              },
+            ),
+            // Add more list items as needed
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Card(
+                      color: Colors.red,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '69',
+                              style: TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
                               ),
                             ),
-                          ),
-                        ],
+                            Text(
+                              'Active Projects',
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            SizedBox(height: 16),
+                            LinearProgressIndicator(
+                              value: 0.72,
+                              backgroundColor: Colors.white.withOpacity(0.5),
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                            SizedBox(height: 8),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  '43 Pending',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Text(
+                                  '72%',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                      // Garis pembatas antara item
-                      Divider(
-                        height: 10, // Tinggi divider
-                      ),
-                      SizedBox(height: 16), // Jarak setelah divider
-                    ],
+                    ),
                   ),
-                );
-              },
-            );
-          },
+                  SizedBox(width: 16),
+                  Expanded(
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '357',
+                              style: TextStyle(
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              'Professionals',
+                              style: TextStyle(
+                                color: Colors.grey,
+                              ),
+                            ),
+                            SizedBox(height: 16),
+                            Text(
+                              'Today’s Heroes',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: Colors.orange,
+                                  child: Text('A'),
+                                ),
+                                SizedBox(width: 8),
+                                CircleAvatar(
+                                  backgroundImage: AssetImage('assets/avatars/300-11.jpg'),
+                                ),
+                                SizedBox(width: 8),
+                                CircleAvatar(
+                                  backgroundColor: Colors.blue,
+                                  child: Text('S'),
+                                ),
+                                SizedBox(width: 8),
+                                CircleAvatar(
+                                  backgroundImage: AssetImage('assets/avatars/300-2.jpg'),
+                                ),
+                                SizedBox(width: 8),
+                                CircleAvatar(
+                                  backgroundColor: Colors.red,
+                                  child: Text('P'),
+                                ),
+                                SizedBox(width: 8),
+                                CircleAvatar(
+                                  backgroundImage: AssetImage('assets/avatars/300-12.jpg'),
+                                ),
+                                SizedBox(width: 8),
+                                CircleAvatar(
+                                  backgroundColor: Colors.black,
+                                  child: Text('+42', style: TextStyle(color: Colors.white)),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Add more widgets as needed
+          ],
         ),
       ),
     );
